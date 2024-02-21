@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/assets/assets.gen.dart';
 import '../../../core/components/search_input.dart';
 import '../../../core/components/spaces.dart';
 import '../../../core/router/app_router.dart';
+import '../bloc/all_product/all_product_bloc.dart';
 import '../models/product_model.dart';
 import '../models/store_model.dart';
 import '../widgets/banner_slider.dart';
@@ -214,6 +216,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     searchController = TextEditingController();
+    context.read<AllProductBloc>().add(const AllProductEvent.getAllProducts());
     super.initState();
   }
 
@@ -268,37 +271,51 @@ class _HomePageState extends State<HomePage> {
           const SpaceHeight(12.0),
           const MenuCategories(),
           const SpaceHeight(50.0),
-          ProductList(
-            title: 'Featured Product',
-            onSeeAllTap: () {},
-            items: featuredProducts,
+          BlocBuilder<AllProductBloc, AllProductState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loaded: (products) {
+                  return ProductList(
+                      title: 'Featured Product',
+                      onSeeAllTap: () {},
+                      items: products);
+                },
+                orElse: () => const SizedBox.shrink(),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                error: (message) => Center(
+                  child: Text(message),
+                ),
+              );
+            },
           ),
           const SpaceHeight(50.0),
           BannerSlider(items: banners2),
           const SpaceHeight(28.0),
-          ProductList(
-            title: 'Best Sellers',
-            onSeeAllTap: () {},
-            items: bestSellers,
-          ),
+          // ProductList(
+          //   title: 'Best Sellers',
+          //   onSeeAllTap: () {},
+          //   items: bestSellers,
+          // ),
           const SpaceHeight(50.0),
-          ProductList(
-            title: 'New Arrivals',
-            onSeeAllTap: () {},
-            items: newArrivals,
-          ),
+          // ProductList(
+          //   title: 'New Arrivals',
+          //   onSeeAllTap: () {},
+          //   items: newArrivals,
+          // ),
           const SpaceHeight(50.0),
-          ProductList(
-            title: 'Top Rated Product',
-            onSeeAllTap: () {},
-            items: topRatedProducts,
-          ),
+          // ProductList(
+          //   title: 'Top Rated Product',
+          //   onSeeAllTap: () {},
+          //   items: topRatedProducts,
+          // ),
           const SpaceHeight(50.0),
-          ProductList(
-            title: 'Special Offers',
-            onSeeAllTap: () {},
-            items: specialOffers,
-          ),
+          // ProductList(
+          //   title: 'Special Offers',
+          //   onSeeAllTap: () {},
+          //   items: specialOffers,
+          // ),
         ],
       ),
     );
