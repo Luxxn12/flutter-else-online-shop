@@ -14,4 +14,16 @@ class ProductRemoteDatasource {
       return const Left('Internet Server Error');
     }
   }
+
+  Future<Either<String, ProductResponseModel>> getProductByCategory(
+      int categoryId) async {
+    final response =
+        await http.get(Uri.parse('${Variables.baseUrl}/api/products?category_id=$categoryId'));
+
+    if (response.statusCode == 200) {
+      return Right(ProductResponseModel.fromJson(response.body));
+    } else {
+      return const Left('Internet Server Error');
+    }
+  }
 }

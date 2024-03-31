@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_else_onlineshop_app/data/datasources/auth_remote_datasource.dart';
 import 'package:flutter_else_onlineshop_app/data/datasources/category_remote_datasource.dart';
 import 'package:flutter_else_onlineshop_app/data/datasources/product_remote_datasource.dart';
+import 'package:flutter_else_onlineshop_app/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:flutter_else_onlineshop_app/presentation/home/bloc/all_product/all_product_bloc.dart';
+import 'package:flutter_else_onlineshop_app/presentation/home/bloc/best_seller_product/best_seller_product_bloc.dart';
+import 'package:flutter_else_onlineshop_app/presentation/home/bloc/checkout/checkout_bloc.dart';
+import 'package:flutter_else_onlineshop_app/presentation/home/bloc/special_offer_product/special_offer_product_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,8 +33,22 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AllProductBloc(ProductRemoteDatasource()),
         ),
+        BlocProvider(
+          create: (context) => BestSellerProductBloc(ProductRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SpecialOfferProductBloc(ProductRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => CheckoutBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LoginBloc(AuthRemoteDatasource()),
+        ),
       ],
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),

@@ -20,15 +20,16 @@ class CategoryButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.network(
               imagePath,
-              width: 80.0,
-              height: 80.0,
+              width: 70.0,
+              height: 70.0,
               fit: BoxFit.contain,
             ),
             SizedBox(
-              width: 70.0,
+              width: 100.0,
               child: Text(
                 label,
                 style: const TextStyle(),
